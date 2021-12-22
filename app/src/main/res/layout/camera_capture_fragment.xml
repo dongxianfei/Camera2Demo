@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.demo.camera.CameraDemo.view.PreviewTextureView
+        android:id="@+id/capture_preview_texture"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ImageButton
+        android:id="@+id/capture_switchId_btn"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/ic_switch_front" />
+
+    <TextView
+        android:id="@+id/capture_mode_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:text="Photo"
+        android:layout_toLeftOf="@+id/capture_switchMode_btn"
+        android:textColor="#F00"
+        android:textSize="20sp" />
+
+    <ImageButton
+        android:id="@+id/capture_switchMode_btn"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/ic_switch_front" />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true">
+
+        <ImageButton
+            android:id="@+id/capture_cap_btn"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/cap_selector" />
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">CameraDemo</string>
+    <string name="need_permissions">This sample needs permission for camera and audio recording.</string>
+</resources>
