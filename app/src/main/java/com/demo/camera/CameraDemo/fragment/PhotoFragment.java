@@ -28,7 +28,6 @@ import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.OrientationEventListener;
 import android.view.Surface;
-import android.view.SurfaceHolder;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,14 +44,13 @@ import com.demo.camera.CameraDemo.utils.LogUtil;
 import com.demo.camera.CameraDemo.view.PreviewTextureView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
-public class CaptureFragment extends Fragment implements View.OnClickListener {
+public class PhotoFragment extends Fragment implements View.OnClickListener {
 
-    private static final LogUtil.Tag TAG = new LogUtil.Tag(CaptureFragment.class.getSimpleName());
+    private static final LogUtil.Tag TAG = new LogUtil.Tag(PhotoFragment.class.getSimpleName());
 
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
 
@@ -89,8 +87,8 @@ public class CaptureFragment extends Fragment implements View.OnClickListener {
     private Handler mBackgroundHandler;
     private Semaphore mCameraOpenCloseLock = new Semaphore(1);
 
-    public static CaptureFragment newInstance() {
-        return new CaptureFragment();
+    public static PhotoFragment newInstance() {
+        return new PhotoFragment();
     }
 
     private class OrientationEventListenerImpl extends OrientationEventListener {
@@ -422,11 +420,10 @@ public class CaptureFragment extends Fragment implements View.OnClickListener {
             int rotation = getActivity().getWindowManager().getDefaultDisplay().getRotation();
             LogHelper.i(TAG, "JPEG_ORIENTATION = " + getOrientation(rotation) + ",rotation = " + rotation);
             mRequest.set(CaptureRequest.JPEG_ORIENTATION, getOrientation(rotation));
-            //mRequest.set(CaptureRequest.JPEG_ORIENTATION, 90);
 
-            //CONTROL_AF_MODE
-            mRequest.set(CaptureRequest.CONTROL_AF_MODE,
-                    CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
+            //CONTROL_AF_MODE,自动对焦
+            //mRequest.set(CaptureRequest.CONTROL_AF_MODE,
+            //        CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
 
             //焦距
             //mRequest.set(CaptureRequest.LENS_FOCUS_DISTANCE, num);
@@ -447,13 +444,13 @@ public class CaptureFragment extends Fragment implements View.OnClickListener {
             //mRequest.set(CaptureRequest.CONTROL_EFFECT_MODE, CameraMetadata.CONTROL_EFFECT_MODE_AQUA);
 
             //Flash on
-            mRequest.set(CaptureRequest.CONTROL_AE_MODE, CameraMetadata.CONTROL_AE_MODE_ON);
-            mRequest.set(CaptureRequest.FLASH_MODE, CameraMetadata.FLASH_MODE_TORCH);
+//            mRequest.set(CaptureRequest.CONTROL_AE_MODE, CameraMetadata.CONTROL_AE_MODE_ON);
+//            mRequest.set(CaptureRequest.FLASH_MODE, CameraMetadata.FLASH_MODE_TORCH);
 
             //Scene Mode
             //mRequest.set(CaptureRequest.CONTROL_SCENE_MODE, CameraMetadata.CONTROL_SCENE_MODE_FACE_PRIORITY);
 
-            //自动对焦
+            //对焦
             //mRequest.set(CaptureRequest.CONTROL_AF_TRIGGER, CameraMetadata.CONTROL_AF_TRIGGER_CANCEL);
             //mRequest.set(CaptureRequest.CONTROL_AF_REGIONS, meteringRectangleArr);
             //mRequest.set(CaptureRequest.CONTROL_AF_TRIGGER, CameraMetadata.CONTROL_AF_TRIGGER_START);
@@ -479,9 +476,6 @@ public class CaptureFragment extends Fragment implements View.OnClickListener {
             createCaptureRequest(true);
 
             mCameraSession.capture(mRequest.build(), null, mBackgroundHandler);
-
-            createCaptureRequest(false);
-            setRepeatingRequest();
 
         } catch (CameraAccessException e) {
             e.printStackTrace();

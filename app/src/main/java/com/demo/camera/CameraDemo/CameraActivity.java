@@ -1,16 +1,14 @@
 package com.demo.camera.CameraDemo;
 
 import android.Manifest;
-import android.content.Context;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.demo.camera.CameraDemo.fragment.CaptureFragment;
+import com.demo.camera.CameraDemo.fragment.PhotoFragment;
 import com.demo.camera.CameraDemo.fragment.VideoFragment;
 import com.demo.camera.CameraDemo.utils.LogUtil;
-import com.demo.camera.CameraDemo.utils.PermissionUtil;
 import com.hjq.permissions.OnPermission;
 import com.hjq.permissions.XXPermissions;
 
@@ -30,7 +28,7 @@ public class CameraActivity extends AppCompatActivity {
     private FragmentTransaction mTransaction;
     private String CameraMode = "Photo";
 
-    private CaptureFragment mCaptureFragment;
+    private PhotoFragment mPhotoFragment;
     private VideoFragment mVideoFragment;
 
     @Override
@@ -63,7 +61,7 @@ public class CameraActivity extends AppCompatActivity {
 
         switch (mode) {
             case "Photo":
-                mTransaction.replace(R.id.container, mCaptureFragment).commit();
+                mTransaction.replace(R.id.container, mPhotoFragment).commit();
                 break;
             case "Video":
                 mTransaction.replace(R.id.container, mVideoFragment).commit();
@@ -72,11 +70,11 @@ public class CameraActivity extends AppCompatActivity {
     }
 
     public void addFragment(){
-        mCaptureFragment = CaptureFragment.newInstance();
+        mPhotoFragment = PhotoFragment.newInstance();
         mVideoFragment = VideoFragment.newInstance();
 
         mTransaction = getSupportFragmentManager().beginTransaction();
-        mTransaction.replace(R.id.container, mCaptureFragment).commit();
+        mTransaction.replace(R.id.container, mPhotoFragment).commit();
     }
 
     public void getPermission() {

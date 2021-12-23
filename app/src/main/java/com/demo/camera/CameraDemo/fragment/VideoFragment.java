@@ -303,6 +303,8 @@ public class VideoFragment extends Fragment implements View.OnClickListener {
 
     private void initCamera(boolean isBack, int width, int height) {
 
+        mMediaRecorder = new MediaRecorder();
+
         Activity activity = getActivity();
         mCameraManager = CameraUtils.getCameraManager(getActivity());
         try {
@@ -351,6 +353,8 @@ public class VideoFragment extends Fragment implements View.OnClickListener {
         if (null == mCameraDevice || !mTextureView.isAvailable() || null == mPreviewSize) {
             return;
         }
+
+        closeOldSession();
 
         try {
             List<Surface> surfaces = new ArrayList<>();
@@ -441,9 +445,6 @@ public class VideoFragment extends Fragment implements View.OnClickListener {
     private void initRecorder() {
         LogHelper.i(TAG, "initMediaRecorder");
 
-        releaseRecorder();
-
-        mMediaRecorder = new MediaRecorder();
         mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
         mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
         mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
@@ -482,7 +483,6 @@ public class VideoFragment extends Fragment implements View.OnClickListener {
     }
 
     private void startRecording() {
-        closeOldSession();
 
         initRecorder();
 
@@ -497,11 +497,11 @@ public class VideoFragment extends Fragment implements View.OnClickListener {
         mIsRecordingVideo = false;
 
         mMediaRecorder.stop();
-
-        releaseRecorder();
-
+        mMediaRecorder.reset();
 
         showToast("Video saved success!");
+
+        //createCaptureSession(false);
         setRepeatingRequest(false);
     }
 
@@ -548,18 +548,7 @@ public class VideoFragment extends Fragment implements View.OnClickListener {
         try {
             mCameraOpenCloseLock.acquire();
 
-            releaseRecorder();
-
-            if (mCameraSession != null) {
-                try {
-                    mCameraSession.stopRepeating();
-                    mCameraSession.abortCaptures();
-                    mCameraSession.close();
-                    mCameraSession = null;
-                } catch (CameraAccessException e) {
-                    LogHelper.e(TAG, "abortCaptures exception");
-                }
-            }
+            closeOldSession();
 
             if (null != mCameraDevice) {
                 mCameraDevice.close();
@@ -567,6 +556,7 @@ public class VideoFragment extends Fragment implements View.OnClickListener {
             }
 
             if (null != mMediaRecorder) {
+                mMediaRecorder.reset();
                 mMediaRecorder.release();
                 mMediaRecorder = null;
             }
